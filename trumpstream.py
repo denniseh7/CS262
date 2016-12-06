@@ -1,6 +1,7 @@
 import tweepy
 import json
-
+#Dennis Hsu CS 262
+#Dec. 6 2016
 consumer_token="9jVZhmXLepmYSWiFY31bwLTPb"
 consumer_secret="nIMcymRK2RZGz2LRJva25GrFx1721yj2adUhGbsbsvUEhqTTLC"
 
@@ -47,4 +48,5 @@ class MyStreamListener(tweepy.StreamListener):
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 
+#filter candidates here
 myStream.filter(track=['Donald Trump'],languages=['en'],async=True)
