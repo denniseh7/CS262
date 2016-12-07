@@ -3,17 +3,22 @@ from difflib import SequenceMatcher
 from nltk import WordNetLemmatizer
 from nltk.corpus import wordnet
 from nltk.corpus import sentiwordnet as swn
-
 import nltk
 
-afinn = dict(map(lambda p: (p[0],int(p[1])),[ line.split('\t') for line in open("AFINN-111.txt") ]))
-
-def afinnscore(processed):
-    return sum(map(lambda word: afinn.get(word, 0), processed.lower().split()))
-
-print(afinnscore("hillary clinton stole over delegate to be a illegal counterfeit opponent against donald j trump for president"))
-
 wnlmz=WordNetLemmatizer()
+
+def get_wordnet_pos(treebank_tag):
+
+    if treebank_tag.startswith('J'):
+        return wordnet.ADJ
+    elif treebank_tag.startswith('V'):
+        return wordnet.VERB
+    elif treebank_tag.startswith('N'):
+        return wordnet.NOUN
+    elif treebank_tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return ''
 
 def lemma(output):
     words = output.split()
@@ -24,20 +29,32 @@ def lemma(output):
     tweet.strip()
     return tweet
 
+counter=0
+with open('noduprtfile1.txt',encoding='utf8') as f:
+    for line in f:
+        tweet=lemma(line)
 
-print(lemma("pleaded"))
-print(lemma("pleads"))
+        tokens = nltk.word_tokenize(tweet)
+        tagged = nltk.pos_tag(tokens)
 
-print(wnlmz.lemmatize("pleaded",pos=wordnet.VERB))
+        processed=""
+        sum=0
+        afscore=0
+        for w in tagged:
+            tag=get_wordnet_pos(w[1])
+            if tag != '':
+                word=wnlmz.lemmatize(w[0],get_wordnet_pos(w[1]))
+            else:
+                word=wnlmz.lemmatize(w[0])
 
-print(wordnet.ADJ)
+            processed+=(word + ' ')
 
-swnset=list(swn.senti_synsets("hillary",'a'))
-print(len(swnset))
-pscore=(list(swn.senti_synsets("hillary",'a'))[0]).pos_score()
-nscore=(list(swn.senti_synsets("sad",'a'))[0]).neg_score()
+        processed=processed.strip()
 
-print((nltk.pos_tag(["hillary"]))[0])
 
-print(pscore)
-print(nscore)
+        f = open('testdatafile1.txt', 'a')
+        f.write(processed + '\n')
+        f.close()
+        counter += 1
+
+print("Tweets: " + str(counter))
