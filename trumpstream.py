@@ -29,7 +29,7 @@ class MyStreamListener(tweepy.StreamListener):
                 if "http" not in tweet:
                     output=' '.join(tweet.split())
                     output+='\n'
-                    f = open('trumptweet1.txt', 'ab')
+                    f = open('trumptweet2.txt', 'ab')
                     f.write(output.encode('utf-8'))
                     f.close()
 
