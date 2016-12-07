@@ -1,7 +1,11 @@
 import tweepy
 import json
+
 #Dennis Hsu CS 262
 #Dec. 6 2016
+#livestream of Candidate Tweets from Tweepy/Twitter
+
+
 consumer_token="9jVZhmXLepmYSWiFY31bwLTPb"
 consumer_secret="nIMcymRK2RZGz2LRJva25GrFx1721yj2adUhGbsbsvUEhqTTLC"
 

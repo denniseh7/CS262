@@ -1,5 +1,9 @@
-import tweepy
-import re
+#Dennis Hsu
+#CS262
+#12/6/16
+#separate tweet/retweets
+
+
 
 filename="trumptweet1.txt"
 count=0
