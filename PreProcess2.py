@@ -60,7 +60,7 @@ def wnscore(word,tag):
 
 
 counter=0
-with open('TrumpNoSup1.txt',encoding='utf8') as f:
+with open('testdatafile2.txt',encoding='utf8') as f:
     for line in f:
         tweet=lemma(line)
 
@@ -84,7 +84,7 @@ with open('TrumpNoSup1.txt',encoding='utf8') as f:
         processed=processed.strip()
         afscore=afinnscore(processed)
 
-        f = open('trainfile1.txt', 'a')
+        f = open('testfeaturefile1.txt', 'a')
         f.write(str(afscore) + ',' + str(sum) + ',' + processed + '\n')
         f.close()
         counter += 1

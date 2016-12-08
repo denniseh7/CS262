@@ -5,6 +5,7 @@
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import OneHotEncoder
 
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
@@ -16,30 +17,55 @@ from sklearn.ensemble import RandomForestClassifier,VotingClassifier
 from sklearn.model_selection import cross_val_score
 import numpy as np
 
-with open('trainfile1.txt') as f:
+with open('trainfile2.txt') as f:
     afinnscores = []
     swnscores=[]
     textlist=[]
 
     for line in f:
         datalist=line.strip().split(',')
-        afinnscores.append(datalist[0])
-        swnscores.append(datalist[1])
+        afinnscores.append(float(datalist[0]))
+        swnscores.append(float(datalist[1]))
         textlist.append(datalist[2])
 
+amin=min(afinnscores)
+if amin<0:
+    afinnscores = [x - amin for x in afinnscores]
+
+smin=min(swnscores)
+if smin<0:
+    swnscores = [x - smin for x in swnscores]
+
+print(afinnscores)
+print(swnscores)
+
+
+a=np.array(afinnscores)
+b=np.array(swnscores)
+
+c=np.column_stack((a,b))
+
+enc=OneHotEncoder()
+
+d=enc.fit_transform(c)
+
+d=d.todense()
+
 #count or tfidf
-#vec=CountVectorizer(analyzer='char_wb',ngram_range=(1,2))
-vec=TfidfVectorizer(analyzer='char',ngram_range=(1,4))
+#vec=CountVectorizer(analyzer='word',ngram_range=(2,3))
+vec=TfidfVectorizer(analyzer='char_wb',ngram_range=(1,4))
 
 sparsedata=vec.fit_transform(textlist)
 
-x=sparsedata.todense()
+e=sparsedata.todense()
+
+x=np.hstack([e,d])
 
 y=[]
-for i in range(0,200):
+for i in range(0,100):
     y.append(1)
 
-for i in range(0,200):
+for i in range(0,100):
     y.append(0)
 
 
